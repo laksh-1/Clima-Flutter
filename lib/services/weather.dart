@@ -1,12 +1,14 @@
 import 'package:practice/services/location.dart';
 import 'package:practice/services/networking.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class WeatherModel {
+  var apikey = dotenv.get('API_KEY');
   Future<dynamic> getLocationWeather() async {
     Location location = Location();
     await location.getCurrentLocation();
     NetworkHelper networkHelper = NetworkHelper(
-        'http://api.openweathermap.org/data/2.5/weather?lat=${location.latitude}&lon=${location.longitude}&appid=bd71c207d31c53ef659d2f0e35c53863&units=metric');
+        'http://api.openweathermap.org/data/2.5/weather?lat=${location.latitude}&lon=${location.longitude}&appid=$apikey&units=metric');
     var weatherData = await networkHelper.getData();
 
     return weatherData;
@@ -14,7 +16,7 @@ class WeatherModel {
 
   Future<dynamic> getCityWeather(String cityName) async {
     NetworkHelper networkHelper = NetworkHelper(
-        'http://api.openweathermap.org/data/2.5/weather?q=$cityName&appid=bd71c207d31c53ef659d2f0e35c53863&units=metric');
+        'http://api.openweathermap.org/data/2.5/weather?q=$cityName&appid=$apikey&units=metric');
     var weatherData = await networkHelper.getData();
 
     return weatherData;
